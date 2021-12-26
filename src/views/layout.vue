@@ -1,6 +1,7 @@
 <template>
   <AppNavbar></AppNavbar>
   <AppHeader></AppHeader>
+  <AppHeaderSticky></AppHeaderSticky>
   <main class="app-body">
     <!-- 二级路由 -->
     <router-view></router-view>
@@ -15,13 +16,16 @@ import AppNavbar from '@/components/app-navbar.vue'
 import AppHeader from '@/components/app-header.vue'
 // 导入底部结构
 import AppFooter from '@/components/app-footer.vue'
+// 导入吸顶导航菜单
+import AppHeaderSticky from '@/components/app-header-sticky.vue'
 import { useStore } from 'vuex'
 export default {
   name: 'xtx-layout',
   components: {
     AppNavbar,
     AppHeader,
-    AppFooter
+    AppFooter,
+    AppHeaderSticky
   },
   setup () {
     const store = useStore()

@@ -14,14 +14,26 @@ export default {
   mutations: {
     setList (state, data) {
       state.list = data
+    },
+    // 定义显示二级类目的盒子方法
+    show (state, id) {
+      // 找出当前id下open属性，置为true
+      const category = state.list.find(item => item.id === id)
+      category.open = true
+    },
+    // 定义隐藏二级类目的盒子方法
+    hidden (state, id) {
+      // 找出当前id下的open属性，置为false
+      const category = state.list.find(item => item.id === id)
+      category.open = false
     }
   },
   actions: {
     async getList ({ commit }) {
       try {
         const { result } = await findAllCategory()
+        result.forEach(item => (item.open = false))
         commit('setList', result)
-        console.log('data', result)
       } catch (error) {
         alert(error)
       }

@@ -1,12 +1,13 @@
 <template>
   <ul class="app-header-nav">
     <li class="home"><RouterLink to="/">首页</RouterLink></li>
-    <li v-for="item in list" :key="item.id">
-      <RouterLink to="/">{{item.name}}</RouterLink>
-      <div class="layer">
+    <li v-for="item in list" :key="item.id" v-on:click="hidden(item.id)" v-on:mouseenter='show(item.id)' v-on:mouseleave="hidden(item.id)">
+      <RouterLink :to="`/category/${item.id}`">{{item.name}}</RouterLink>
+      <div :class="{'layer':true,'active':item.open}">
         <ul>
+          <!-- li元素可以不用绑定点击事件，可以利用事件冒泡，二级类目的li元素点击，也可以触发一级类目的关闭事件 -->
           <li v-for="sub in item.children" :key="sub.id">
-            <RouterLink to="/">
+            <RouterLink :to="`/category/sub/${sub.id}`">
               <img :src="sub.picture">
               <p>{{sub.name}}</p>
             </RouterLink>
@@ -27,8 +28,18 @@ export default {
     const list = computed(() => {
       return store.state.category.list
     })
+    // 显示二级类目的方法
+    function show (id) {
+      store.commit('category/show', id)
+    }
+    // 隐藏二级类目的方法
+    function hidden (id) {
+      store.commit('category/hidden', id)
+    }
     return {
-      list
+      list,
+      show,
+      hidden
     }
   }
 }
@@ -56,10 +67,6 @@ export default {
       > a {
         color: @xtxColor;
         border-bottom: 1px solid @xtxColor;
-      }
-      > .layer {
-        height: 132px;
-        opacity: 1;
       }
     }
   }
@@ -98,5 +105,9 @@ export default {
       }
     }
   }
+}
+.active{
+  height: 132px;
+  opacity: 1;
 }
 </style>
